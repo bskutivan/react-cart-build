@@ -1,0 +1,7 @@
+<div class="Header__Icon Icon-Wrapper Icon-Wrapper--clickable react_cart" {% if settings.cart_type == 'drawer' %} data-drawer-id="sidebar-cart" aria-expanded="false" aria-label="{{ 'header.navigation.open_cart' | t }}" {% endif %}
+  id="carticon-template-react"
+  data-react-entrypoint='carticon'
+  data-section-id="carticon-template-react"
+  data-cart='{{ cart | json | escape }}'
+  >
+</div>

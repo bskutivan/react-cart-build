@@ -1,0 +1,50 @@
+<script type="application/json" data-section-data>
+{
+  "settings_data": {
+    "title": "{{ 'cart.general.title' | t | escape }}",
+    "close_cart": "{{ 'header.navigation.close_cart' | t | escape }}" ,
+    "cart_url": "{{ routes.cart_url }}",
+    "empty": "{{ 'cart.general.empty' | t | escape }}",
+    "shipping_and_taxes_notice": "{{ 'cart.general.shipping_and_taxes_notice' | t | escape }}",
+    "view_bag": "{{ 'cart.general.view_bag' | t | escape }}",
+    "cart_change_url": "{{ routes.cart_change_url }}",
+    "remove": "{{ 'cart.items.remove' | t }}",
+    "onCartPage": {%- if template == 'cart' -%}true{%- else -%}false{%- endif -%},
+    "set_quantity": "{{ 'cart.items.set_quantity' | t: new_quantity: '' }}",
+  },
+  "variant_data": {
+    {%- for line_item in cart.items -%}
+    {% assign product_collection_handles = ''%}
+    {% for collection in line_item.product.collections %}
+      {% assign product_collection_handles = product_collection_handles | append: collection.handle | append: ', ' %}
+    {% endfor %}
+    {%- unless line_item.product.has_only_default_variant -%}
+      {%- capture variant_json -%}
+      {"option1": {{ line_item.variant.option1 | json }},"option2": {{ line_item.variant.option2 | json }},"option3": {{ line_item.variant.option3 | json }}}
+      {%- endcapture -%}
+    {% endunless %}
+      "{{ line_item.variant.id }}": {
+        "available": {%- if cart_availability[forloop.index0] == "true" -%}true{%- else -%}false{%- endif -%},
+        "inventory": {{ line_item.variant.inventory_quantity }},
+        "upc": "{{ line_item.variant.barcode }}",
+        "sku": "{{ line_item.variant.sku }}",
+        "vendor": "{{ line_item.product.vendor }}",
+        "collection_handles": "{{ product_collection_handles | escape }}"
+      }{%- unless forloop.last -%},{%- endunless -%}
+    {%- endfor -%}
+  }
+}
+</script>
+
+<section data-section-id="{{ section.id }}" data-section-type="cartdrawer-template-react"
+  id="cartdrawer-template-react"
+  data-react-entrypoint='cartdrawer'
+  data-cart='{{ cart | json | escape }}'
+  >
+</section>
+
+{% schema %}
+{
+  "name": "Cart Drawer",
+}
+{% endschema %}
