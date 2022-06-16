@@ -2,5 +2,7 @@ This is a playground to examine implementation of react on the Dawn theme of Sho
 
 Currently in its infancy and using pieces of react app integrations on other shopify stores to learn by doing.
 
+Future goals include using it to learn how to leverage REDUX alongside react to create a more seamless and fun ecommerce experience. 
+
 react-cart-build.myshopify.com
 PW: rowhaw
